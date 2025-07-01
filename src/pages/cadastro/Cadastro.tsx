@@ -4,6 +4,7 @@ import type Usuario from '../../models/Usuario'
 import { useNavigate } from 'react-router-dom'
 import { cadastrarUsuario } from '../../services/Service'
 import { RotatingLines } from 'react-loader-spinner'
+import { ToastAlerta } from '../../utils/ToastAlerta'
 
 function Cadastro() {
 	const navigate = useNavigate()
@@ -12,7 +13,7 @@ function Cadastro() {
 	const [confirmaSenha, setConfirmaSenha] = useState<string>('')
 
 	const [usuario, setUsuario] = useState<Usuario>({
-		id: 0,
+		id: undefined,
 		nome: '',
 		usuario: '',
 		senha: '',
@@ -20,7 +21,7 @@ function Cadastro() {
 	})
 
 	useEffect(() => {
-		if (usuario.id !== 0) {
+		if (usuario.id !== undefined) {
 			retornar()
 		}
 	}, [usuario])
@@ -55,14 +56,14 @@ function Cadastro() {
 					usuario,
 					setUsuario
 				)
-				alert('Usuário cadastrado com sucesso!')
+				ToastAlerta('Usuário cadastrado com sucesso!','sucesso')
 			} catch (error) {
-				alert('Erro ao cadastrar o usuário')
+				ToastAlerta('Erro ao cadastrar o usuário','erro')
 				console.error(error)
 			}
 		} else {
-			alert(
-				'Dados do usuário inconsistentes! Verifique as informações do cadastro'
+			ToastAlerta(
+				'Dados do usuário inconsistentes! Verifique as informações do cadastro','info'
 			)
 			setUsuario({
 				...usuario,
